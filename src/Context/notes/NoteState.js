@@ -36,14 +36,14 @@ const NoteState = (props) => {
         },
         body: JSON.stringify({ title, description, tag }),
       });
-      console.log(JSON.stringify({ title, description, tag }));
-      console.log((await response.json()) + "add_notes");
+      const json=await response.json();
+      console.log(json + "add_notes");
     } catch (error) {
       console.log(error.message);
     }
 
     let note = {
-      _id: "63cbde0dcf18316c900c8f43",
+      _id: "63cbde0d",
       userID: "63c9193c1a44cc106d7d1b86",
       ref: "User",
       title: title,
@@ -53,9 +53,16 @@ const NoteState = (props) => {
       __v: 0,
     };
     setNotes(notes.concat(note));
+    // window.location.reload(true);
   };
   // delete notes
   const delete_notes = async (id) => {
+    if(id==='63cbde0d'){
+      const reload= window.confirm("To delete this note you have to reload this page, click on ok to reload!");
+       if(reload===true){
+        window.location.reload(true)
+       }
+    }
     try {
       const response = await fetch(`${host}/delete-notes/${id}`, {
         method: "delete",
