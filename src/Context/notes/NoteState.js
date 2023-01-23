@@ -43,7 +43,7 @@ const NoteState = (props) => {
     }
 
     let note = {
-      _id: "63cbde0d",
+      _id: "",
       userID: "63c9193c1a44cc106d7d1b86",
       ref: "User",
       title: title,
@@ -57,8 +57,8 @@ const NoteState = (props) => {
   };
   // delete notes
   const delete_notes = async (id) => {
-    if(id==='63cbde0d'){
-      const reload= window.confirm("To delete this note you have to reload this page, click on ok to reload!");
+    if(id===''){
+      const reload= window.confirm("Failed, To delete this note you have to reload this page, click on ok to reload!");
        if(reload===true){
         window.location.reload(true)
        }
@@ -86,9 +86,10 @@ const NoteState = (props) => {
   };
   // update notes
   const update_notes = async (id, title, description, tag) => {
+    
     try {
       const response = await fetch(`${host}/update-notes/${id}`, {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": " application/json",
           "auth-token":
@@ -96,20 +97,22 @@ const NoteState = (props) => {
         },
         body: JSON.stringify({ title, description, tag }),
       });
-      const json = response.json();
+      const json =await response.json();
       console.log(json);
     } catch (error) {
       console.log(error.message);
     }
-
-    for (let index = 0; index < notes.length; index++) {
-      const element = notes[index];
+    const newNotes=JSON.parse(JSON.stringify(notes))
+    for (let index = 0; index <newNotes.length; index++) {
+      const element = newNotes[index];
       if (element._id === id) {
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+        newNotes[index].title = title;
+        newNotes[index].description = description;
+        newNotes[index].tag = tag;
+        break;
       }
     }
+    setNotes(newNotes)
   };
   return (
     <NoteContext.Provider
