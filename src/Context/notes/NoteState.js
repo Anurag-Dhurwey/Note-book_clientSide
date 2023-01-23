@@ -5,41 +5,39 @@ const NoteState = (props) => {
   const host = "http://localhost:4000";
   const initialNotes = [];
   let [notes, setNotes] = useState(initialNotes);
-  // get all notes 
-  const get_notes = async() => {
-       
+  // get all notes
+  const get_notes = async () => {
     try {
       const response = await fetch(`${host}/api/notes`, {
-       
         method: "get",
         headers: {
           "auth-token":
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNjOTE5M2MxYTQ0Y2MxMDZkN2QxYjg2In0sImlhdCI6MTY3NDEzMzE4MX0.R56iIaVnKNvSRcWyuLhC4CgbcX5vAwGN7SIsDCpjx0k",
         },
       });
-      console.log(response)
-      const json=await response.json();
-      console.log(json)
-      setNotes(json)
+      console.log(response);
+      const json = await response.json();
+      console.log(json);
+      setNotes(json);
     } catch (error) {
       console.log(error.message);
     }
-
   };
   // add notes
-  const add_notes = async(title, description, tag) => {
-       
+  const add_notes = async (title, description, tag) => {
     try {
       const response = await fetch(`${host}/api/post-notes`, {
-       
         method: "POST",
         headers: {
+          Accept: "application/json",
+          "Content-Type": " application/json",
           "auth-token":
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNjOTE5M2MxYTQ0Y2MxMDZkN2QxYjg2In0sImlhdCI6MTY3NDEzMzE4MX0.R56iIaVnKNvSRcWyuLhC4CgbcX5vAwGN7SIsDCpjx0k",
         },
-        body:JSON.stringify({title,description,tag})
+        body: JSON.stringify({ title, description, tag }),
       });
-      console.log(await response.json())
+      console.log(JSON.stringify({ title, description, tag }));
+      console.log((await response.json()) + "add_notes");
     } catch (error) {
       console.log(error.message);
     }
@@ -57,7 +55,22 @@ const NoteState = (props) => {
     setNotes(notes.concat(note));
   };
   // delete notes
-  const delete_notes = (id) => {
+  const delete_notes = async (id) => {
+    try {
+      const response = await fetch(`${host}/delete-notes/${id}`, {
+        method: "delete",
+        headers: {
+          "Content-Type": " application/json",
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNjOTE5M2MxYTQ0Y2MxMDZkN2QxYjg2In0sImlhdCI6MTY3NDEzMzE4MX0.R56iIaVnKNvSRcWyuLhC4CgbcX5vAwGN7SIsDCpjx0k",
+        },
+      });
+      const json = await response.json();
+      console.log(json);
+    } catch (error) {
+      console.log(error.message);
+    }
+
     console.log("deleted" + id);
     const newNote = notes.filter((note) => {
       return note._id !== id;
@@ -66,21 +79,18 @@ const NoteState = (props) => {
   };
   // update notes
   const update_notes = async (id, title, description, tag) => {
-
     try {
       const response = await fetch(`${host}/update-notes/${id}`, {
-        mode: "no-cors",
         method: "POST",
         headers: {
-          Accept: "application/json",
           "Content-Type": " application/json",
           "auth-token":
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNjOTE5M2MxYTQ0Y2MxMDZkN2QxYjg2In0sImlhdCI6MTY3NDEzMzE4MX0.R56iIaVnKNvSRcWyuLhC4CgbcX5vAwGN7SIsDCpjx0k",
         },
-        body:JSON.stringify({title,description,tag})
+        body: JSON.stringify({ title, description, tag }),
       });
-      const json=response.json();
-      console.log(json)
+      const json = response.json();
+      console.log(json);
     } catch (error) {
       console.log(error.message);
     }
@@ -96,7 +106,7 @@ const NoteState = (props) => {
   };
   return (
     <NoteContext.Provider
-      value={{ notes,get_notes, add_notes, delete_notes, update_notes }}
+      value={{ notes, get_notes, add_notes, delete_notes, update_notes }}
     >
       {props.children}
     </NoteContext.Provider>
