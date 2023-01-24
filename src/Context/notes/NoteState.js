@@ -15,9 +15,7 @@ const NoteState = (props) => {
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNjOTE5M2MxYTQ0Y2MxMDZkN2QxYjg2In0sImlhdCI6MTY3NDEzMzE4MX0.R56iIaVnKNvSRcWyuLhC4CgbcX5vAwGN7SIsDCpjx0k",
         },
       });
-      console.log(response);
       const json = await response.json();
-      console.log(json);
       setNotes(json);
     } catch (error) {
       console.log(error.message);
@@ -36,33 +34,16 @@ const NoteState = (props) => {
         },
         body: JSON.stringify({ title, description, tag }),
       });
-      const json=await response.json();
-      console.log(json + "add_notes");
-    } catch (error) {
-      console.log(error.message);
-    }
-
-    let note = {
-      _id: "",
-      userID: "63c9193c1a44cc106d7d1b86",
-      ref: "User",
-      title: title,
-      tag: tag,
-      description: description,
-      date: "2023-01-21T12:43:57.031Z",
-      __v: 0,
-    };
-    setNotes(notes.concat(note));
-    // window.location.reload(true);
+      const note=await response.json();
+      setNotes(notes.concat(note));
+  } catch (error) {
+    window.alert(error.message)
+    console.log(error.message);
+  }
   };
   // delete notes
   const delete_notes = async (id) => {
-    if(id===''){
-      const reload= window.confirm("Failed, To delete this note you have to reload this page, click on ok to reload!");
-       if(reload===true){
-        window.location.reload(true)
-       }
-    }
+    
     try {
       const response = await fetch(`${host}/delete-notes/${id}`, {
         method: "delete",
@@ -72,17 +53,17 @@ const NoteState = (props) => {
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNjOTE5M2MxYTQ0Y2MxMDZkN2QxYjg2In0sImlhdCI6MTY3NDEzMzE4MX0.R56iIaVnKNvSRcWyuLhC4CgbcX5vAwGN7SIsDCpjx0k",
         },
       });
-      const json = await response.json();
-      console.log(json);
-    } catch (error) {
-      console.log(error.message);
-    }
-
-    console.log("deleted" + id);
+      if(false){
+        console.log(response)
+      }
     const newNote = notes.filter((note) => {
       return note._id !== id;
     });
     setNotes(newNote);
+  } catch (error) {
+    window.alert(error.message)
+    console.log(error.message);
+  }
   };
   // update notes
   const update_notes = async (id, title, description, tag) => {
@@ -97,10 +78,8 @@ const NoteState = (props) => {
         },
         body: JSON.stringify({ title, description, tag }),
       });
-      const json =await response.json();
-      console.log(json);
-    } catch (error) {
-      console.log(error.message);
+    if(false){
+      console.log(response)
     }
     const newNotes=JSON.parse(JSON.stringify(notes))
     for (let index = 0; index <newNotes.length; index++) {
@@ -113,6 +92,10 @@ const NoteState = (props) => {
       }
     }
     setNotes(newNotes)
+  } catch (error) {
+    window.alert(error.message)
+    console.log(error.message);
+  }
   };
   return (
     <NoteContext.Provider
