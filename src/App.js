@@ -8,6 +8,8 @@ import NoteState from "./Context/notes/NoteState";
 import Home from "./Components/Home";
 import Notes from "./Components/Notes";
 import Alert from "./Components/Alert";
+import Login from "./Components/auth/Login";
+import Sinup from "./Components/auth/Sinup";
 function App() {
   return (
     <>
@@ -20,6 +22,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/notes" element={<Notes />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/sinup" element={<Sinup />} />
         </Routes>
         <Footer />
       </NoteState>

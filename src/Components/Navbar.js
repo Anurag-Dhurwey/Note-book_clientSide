@@ -12,15 +12,25 @@ export default function Navbar() {
       <span className="navbar-toggler-icon"></span>
     </button>
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul className="navbar-nav me-auto mb-lg-0">
         <li className="nav-item">
           <Link className={`nav-link f-bold  ${location.pathname==="/notes"? "active":""}`} aria-current="page" to={"/notes"}>Notes</Link>
         </li>
         <li className="nav-item">
           <Link className={`nav-link f-bold  ${location.pathname==="/about"? "active":""}`}to={"/about"}>About</Link>
         </li>
+        
+      </ul>
+      <ul className='navbar-nav mr-auto mb-lg-0'>
+      <li className="nav-item ">
+          <Link className={`nav-link f-bold  ${location.pathname==="/login"? "active":""}`} aria-current="page" to={"/login"}>Login</Link>
+        </li>
+        <li className="nav-item ">
+          <Link className={`nav-link f-bold  ${location.pathname==="/sinup"? "active":""}`}to={"/sinup"}>Sinup</Link>
+        </li>
       </ul>
     </div>
+    
   </div>
 </nav>
     </>
