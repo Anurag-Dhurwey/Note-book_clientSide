@@ -2,13 +2,20 @@ import React, {useState, useContext ,useEffect,useRef}  from "react";
 import NoteItems from "./NoteItems";
 import noteContext from "../Context/notes/noteContext";
 import Addnotes from "./crud/Add_notes";
+import { useNavigate } from "react-router-dom";
 
 
 const Notes = () => {
+ let Navigate=useNavigate()
   let { notes,get_notes,update_notes} = useContext(noteContext);
   const [note,setNote]=useState({id:"",title:"",description:"",tag:""})
   useEffect(()=>{
-    get_notes()
+    if(localStorage.getItem('auth-token')){
+      get_notes()
+    }else{
+      console.log('Login to contineu')
+      Navigate('/login')
+    }
     // eslint-disable-next-line
   },[])
  

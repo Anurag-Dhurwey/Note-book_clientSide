@@ -11,8 +11,7 @@ const NoteState = (props) => {
       const response = await fetch(`${host}/api/notes`, {
         method: "get",
         headers: {
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNjOTE5M2MxYTQ0Y2MxMDZkN2QxYjg2In0sImlhdCI6MTY3NDEzMzE4MX0.R56iIaVnKNvSRcWyuLhC4CgbcX5vAwGN7SIsDCpjx0k",
+          "auth-token": localStorage.getItem("auth-token"),
         },
       });
       const json = await response.json();
@@ -29,73 +28,68 @@ const NoteState = (props) => {
         headers: {
           Accept: "application/json",
           "Content-Type": " application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNjOTE5M2MxYTQ0Y2MxMDZkN2QxYjg2In0sImlhdCI6MTY3NDEzMzE4MX0.R56iIaVnKNvSRcWyuLhC4CgbcX5vAwGN7SIsDCpjx0k",
+          "auth-token": localStorage.getItem("auth-token"),
         },
         body: JSON.stringify({ title, description, tag }),
       });
-      const note=await response.json();
+      const note = await response.json();
       setNotes(notes.concat(note));
-  } catch (error) {
-    window.alert(error.message)
-    console.log(error.message);
-  }
+    } catch (error) {
+      window.alert(error.message);
+      console.log(error.message);
+    }
   };
   // delete notes
   const delete_notes = async (id) => {
-    
     try {
       const response = await fetch(`${host}/delete-notes/${id}`, {
         method: "delete",
         headers: {
           "Content-Type": " application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNjOTE5M2MxYTQ0Y2MxMDZkN2QxYjg2In0sImlhdCI6MTY3NDEzMzE4MX0.R56iIaVnKNvSRcWyuLhC4CgbcX5vAwGN7SIsDCpjx0k",
+          "auth-token": localStorage.getItem("auth-token"),
         },
       });
-      if(false){
-        console.log(response)
+      if (false) {
+        console.log(response);
       }
-    const newNote = notes.filter((note) => {
-      return note._id !== id;
-    });
-    setNotes(newNote);
-  } catch (error) {
-    window.alert(error.message)
-    console.log(error.message);
-  }
+      const newNote = notes.filter((note) => {
+        return note._id !== id;
+      });
+      setNotes(newNote);
+    } catch (error) {
+      window.alert(error.message);
+      console.log(error.message);
+    }
   };
   // update notes
   const update_notes = async (id, title, description, tag) => {
-    
     try {
       const response = await fetch(`${host}/update-notes/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": " application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNjOTE5M2MxYTQ0Y2MxMDZkN2QxYjg2In0sImlhdCI6MTY3NDEzMzE4MX0.R56iIaVnKNvSRcWyuLhC4CgbcX5vAwGN7SIsDCpjx0k",
+          "auth-token": localStorage.getItem("auth-token"),
         },
         body: JSON.stringify({ title, description, tag }),
       });
-    if(false){
-      console.log(response)
-    }
-    const newNotes=JSON.parse(JSON.stringify(notes))
-    for (let index = 0; index <newNotes.length; index++) {
-      const element = newNotes[index];
-      if (element._id === id) {
-        newNotes[index].title = title;
-        newNotes[index].description = description;
-        newNotes[index].tag = tag;
-        break;
+      if (false) {
+        console.log(response);
       }
+      const newNotes = JSON.parse(JSON.stringify(notes));
+      for (let index = 0; index < newNotes.length; index++) {
+        const element = newNotes[index];
+        if (element._id === id) {
+          newNotes[index].title = title;
+          newNotes[index].description = description;
+          newNotes[index].tag = tag;
+          break;
+        }
+      }
+      setNotes(newNotes);
+    } catch (error) {
+      window.alert(error.message);
+      console.log(error.message);
     }
-    setNotes(newNotes)
-  } catch (error) {
-    window.alert(error.message)
-    console.log(error.message);
-  }
   };
   return (
     <NoteContext.Provider
